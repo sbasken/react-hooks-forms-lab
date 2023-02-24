@@ -15,33 +15,20 @@ function ShoppingList({ items }) {
     setSearchQuery(e.target.value)
   }
 
-  const filteredCategory = items.filter((item) => {
-   if (item.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-    return item
-   }
-  })
-  console.log(filteredCategory)
+  const itemsToDisplay = items
+    .filter((item) => {
+      if (selectedCategory === "All") {
+        return true;
+      } else {
+        return item.category === selectedCategory;
+      }
+    })
+    .filter((item) => {
+      if (item.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return item
+      }
+    })
 
-
-  const itemsToDisplay = items.filter((item) => {
-    if (selectedCategory === "All") return true;
-
-    return item.category === selectedCategory;
-  });
-
-  function displayItems() {
-    if (searchQuery === "") {
-      return itemsToDisplay.map((item) => (
-        <Item key={item.id} name={item.name} category={item.category}/>
-        ))
-    } else {
-      return filteredCategory.map((item) => (
-        <Item key={item.id} name={item.name} category={item.category}/>
-        ))
-    }
-  }
-
-  console.log("filtered" + filteredCategory)
 
   return (
     <div className="ShoppingList">
@@ -52,7 +39,9 @@ function ShoppingList({ items }) {
         searchQuery={searchQuery} 
       />
       <ul className="Items">
-        {displayItems()}
+        {itemsToDisplay.map((item) => (
+        <Item key={item.id} name={item.name} category={item.category}/>
+        ))}
       </ul>
     </div>
   );
